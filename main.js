@@ -1,14 +1,20 @@
+//导入模块
 const koa = require('koa')
-const router = require('koa-router')()
-const fs = require('fs')
+const Router = require('koa-router')
 // 导入koa2-cors模块
 const cors = require('koa2-cors')
+const path = require('path')
 
+const Static = require('koa-static')
+const { historyApiFallback } = require('koa2-connect-history-api-fallback')
+
+// 实例化模块对象
 const app = new koa()
+const router = new Router()
 
-const staticHTML = fs.readFileSync('./static/index.html','utf-8');
 
-console.log(staticHTML)
+
+
 //配置 cors 的中间件
 app.use(
   cors({
@@ -24,13 +30,16 @@ app.use(
     allowHeaders: ['Content-Type', 'Authorization', 'Accept'], //设置服务器支持的所有头信息字段
     exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'] //设置获取其他自定义字段
   })
-)
+).use(historyApiFallback({
+  index: '/index.html'
+})).use(Static(path.join( __dirname, '/public')))
 
+// 路由配置
 router.get('/', async (ctx) => {
-  ctx.body = staticHTML;
+  ctx.render('index')
 })
 
 app.use(router.routes())
 app.use(router.allowedMethods());
 
-app.listen(8080)
+app.listen(3000)

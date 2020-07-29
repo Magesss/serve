@@ -1,6 +1,7 @@
+// 引入接口
+const {router} = require('./api/index')
 //导入模块
 const koa = require('koa')
-const Router = require('koa-router')
 // 导入koa2-cors模块
 const cors = require('koa2-cors')
 const path = require('path')
@@ -10,7 +11,6 @@ const { historyApiFallback } = require('koa2-connect-history-api-fallback')
 
 // 实例化模块对象
 const app = new koa()
-const router = new Router()
 
 
 
@@ -19,10 +19,14 @@ const router = new Router()
 app.use(
   cors({
     origin: function(ctx) { //设置允许来自指定域名请求
-      if (ctx.url === '/test') {
-        return '*'; // 允许来自所有域名请求
-      }
-      return 'http://localhost:8080'; //只允许http://localhost:8080这个域名的请求
+      console.log(1111111111111111111111111111111111111111111111111111111)
+      console.log(ctx)
+      // if (ctx.url.substring(0, 5) === '/api/') {
+      //   console.log(ctx)
+      //   return '*'; // 允许来自所有域名请求
+      // }
+      // return 'http://localhost:8080'; //只允许http://localhost:8080这个域名的请求
+      return '*';
     },
     maxAge: 5, //指定本次预检请求的有效期，单位为秒。
     credentials: true, //是否允许发送Cookie
@@ -30,14 +34,10 @@ app.use(
     allowHeaders: ['Content-Type', 'Authorization', 'Accept'], //设置服务器支持的所有头信息字段
     exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'] //设置获取其他自定义字段
   })
-).use(historyApiFallback({
-  index: '/index.html'
-})).use(Static(path.join( __dirname, '/public')))
+)
+.use(historyApiFallback({index: '/index.html', whiteList: ['/api']}))
+.use(Static(path.join( __dirname, '/public')))
 
-// 路由配置
-router.get('/', async (ctx) => {
-  ctx.render('index')
-})
 
 app.use(router.routes())
 app.use(router.allowedMethods());

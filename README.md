@@ -2,6 +2,7 @@
     需要过滤的文件在.gitignore文件中添加忽略规则
     例如 www/api/managerApi/runtime/
 
+
 #### 开发说明
 - 	采用 node+koa脚手架+mysql+jwt验证
 

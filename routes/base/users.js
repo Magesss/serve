@@ -3,8 +3,8 @@ const createToken = require('../../utils/jwt')
 const {userModel} = require('../../utils/sql')
 
 router.post('/api/login', async (ctx, next) => {
-  const {name, pwd} = ctx.request.body
   console.log(ctx.request.body)
+  const {name, pwd} = ctx.request.body
   await userModel.QUERY_TABLE(name, pwd).then(async res => {
     // 账号密码正确
     if (res.length) {
@@ -23,9 +23,9 @@ router.post('/api/login', async (ctx, next) => {
       })
     } else {
     //账号密码错误
-      ctx.status = 403
       ctx.body = {
         code: 0,
+        msg: '验证不通过',
         data: []
       }
     }

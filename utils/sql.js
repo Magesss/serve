@@ -4,8 +4,8 @@ let userModel = {
     let sql = "insert into tb_users set user_id=?, username=?,password=?,avator=?,create_time=?,login_status=?,user_rule=?;"
     return query(sql, value)
   },
-  QUERY_TABLE: (name, pwd) => {
-    let sql = `select * from tb_users where username='${name}' and password='${pwd}';`
+  QUERY_TABLE: (name) => {
+    let sql = `select * from tb_users where username='${name}';`
     return query(sql)
   },
   UPDATA_TABLE: ({name, pwd, token}) => {

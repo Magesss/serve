@@ -7,13 +7,11 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 // 处理 history 模式
-const { historyApiFallback } = require('koa2-connect-history-api-fallback')
+const {historyApiFallback} = require('koa2-connect-history-api-fallback')
 // cors
 const cors = require('koa2-cors')
 // route
 const {router} = require('./routes')
-//mysql
-// const mySql = require()
 
 //toke验证
 const checkToken = require('./utils/checkToken')
@@ -21,6 +19,7 @@ const checkToken = require('./utils/checkToken')
 // cors
 onerror(app)
 
+app.use(historyApiFallback({ whiteList: ['/api'] }))
 app.use(
   cors({
     origin: function(ctx) { //设置允许来自指定域名请求
@@ -33,6 +32,7 @@ app.use(
     exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'] //设置获取其他自定义字段
   })
 )
+app.use(require('koa-static')(__dirname + '/public'))
 app.use(checkToken)
 // post 请求
 app.use(bodyparser({
@@ -40,11 +40,6 @@ app.use(bodyparser({
 }))
 app.use(json())
 app.use(logger())
-app.use(require('koa-static')(__dirname + '/public'))
-app.use(historyApiFallback({index: '/index.html', whiteList: ['/api']}))
-app.use(views(__dirname + '/views', {
-  extension: 'pug'
-}))
 
 app.use(async (ctx, next) => {
   const start = new Date()

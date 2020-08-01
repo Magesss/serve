@@ -5,6 +5,7 @@ const createToken = require('./jwt')
 const {userModel} = require('./sql')
 
 async function check(ctx, next) {
+  console.log(ctx)
   if (ctx.url === '/api/login' || ctx.url === '/api/register') {
     await next()
   } else {

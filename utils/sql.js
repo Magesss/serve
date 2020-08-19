@@ -1,8 +1,9 @@
 const { query } = require('./query')
 let userModel = {
-  INSERT_TABLE: (value) => {
-    let sql = "insert into tb_users set user_id=?, username=?,password=?,avator=?,create_time=?,login_status=?,user_rule=?;"
-    return query(sql, value)
+  INSERT_TABLE: ({username, password, createTime}) => {
+    console.log(username, password, createTime)
+    let sql = `insert into tb_users set username='${username}',password='${password}',create_time=${createTime}`
+    return query(sql)
   },
   QUERY_TABLE: (name) => {
     let sql = `select * from tb_users where username='${name}';`
@@ -15,7 +16,7 @@ let userModel = {
       WHERE username='${name}' and password='${pwd}';
     `
     return query(sql)
-  }
+  },
 }
 module.exports = {
   userModel

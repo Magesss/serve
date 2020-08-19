@@ -5,7 +5,6 @@ const createToken = require('./jwt')
 const {userModel} = require('./sql')
 
 async function check(ctx, next) {
-  console.log(ctx)
   if (ctx.url === '/api/login' || ctx.url === '/api/register') {
     await next()
   } else {
@@ -34,6 +33,12 @@ async function check(ctx, next) {
           status: 403,
           message: 'toke timeout'
         }
+      }
+    } else {
+      //返回登录页
+      ctx.body = {
+        status: 403,
+        message: 'toke timeout'
       }
     }
   }

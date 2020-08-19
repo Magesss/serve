@@ -12,7 +12,7 @@ var http = require('http');
  * 从环境中获取端口并存储在Express中
  */
 
-var port = normalizePort(process.env.PORT || '9999');
+var port = normalizePort(process.env.PORT || '9998');
 // app.set('port', port);
 
 /**
